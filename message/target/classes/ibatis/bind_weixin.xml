@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+        "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="BindWeixin">
+    <typeAlias alias="bindWeixin" type="com.tom.msg.vo.BindWeixinVo"/>
+    <resultMap id="bindWeixinMap" class="bindWeixin">
+        <result property="id" column="id"/>
+        <result property="userId" column="userId"/>
+        <result property="bind_weixin" column="bind_weixin"/>
+        <result property="create_time" column="create_time"/>
+    </resultMap>
+
+    <insert id="addBindWeixin" parameterClass="bindWeixin">
+    <![CDATA[
+    insert into mail_bind_weixin(userId,bind_weixin,create_time)
+     values(#userId#,#bind_weixin#,now());
+     ]]>
+     <selectKey resultClass="int" keyProperty="id" >  
+		select @@IDENTITY as id  
+	</selectKey>
+    </insert>
+    
+     <select id="getBind" parameterClass="String" resultMap="bindWeixinMap">
+    select id,userId,bind_weixin,create_time from mail_bind_weixin where userId=#userId#
+    </select>
+    
+    <update id="updateBind" parameterClass="bindWeixin">
+    update mail_bind_weixin set bind_weixin = #bind_weixin#,modify_time = now() where userId=#userId#
+    </update>
+</sqlMap>
